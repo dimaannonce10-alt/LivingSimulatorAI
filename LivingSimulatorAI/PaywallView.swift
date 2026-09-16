@@ -24,14 +24,14 @@ struct PaywallView: View {
     @State private var alertMessage = ""
 
     // The 3 user plans in exact order:
-    // 1. Weekly: weekly_life (4.99$)
-    // 2. Monthly: monthly_life (14.99$)
-    // 3. Yearly: yearly_life (100$)
+    // 1. Weekly: weekly_life ($4.99)
+    // 2. Monthly: monthly_life ($14.99)
+    // 3. Yearly: yearly_life ($100)
     let plans: [PaywallPlan] = [
         PaywallPlan(
             id: "weekly_life",
             title: "Weekly",
-            fallbackPrice: "4.99$",
+            fallbackPrice: "$4.99",
             period: "/ wk",
             subtitle: "Billed weekly • Cancel anytime",
             badge: nil
@@ -39,7 +39,7 @@ struct PaywallView: View {
         PaywallPlan(
             id: "monthly_life",
             title: "Monthly",
-            fallbackPrice: "14.99$",
+            fallbackPrice: "$14.99",
             period: "/ mo",
             subtitle: "Billed monthly • Most flexible",
             badge: nil
@@ -47,9 +47,9 @@ struct PaywallView: View {
         PaywallPlan(
             id: "yearly_life",
             title: "Yearly",
-            fallbackPrice: "100$",
+            fallbackPrice: "$100",
             period: "/ yr",
-            subtitle: "Save 44% • 8.33$/mo",
+            subtitle: "Save 44% • $8.33/mo",
             badge: "👑 BEST VALUE"
         )
     ]
@@ -243,11 +243,22 @@ struct PaywallView: View {
     }
 
     // MARK: - 4. Plans Section
+    private func formattedPrice(for plan: PaywallPlan) -> String {
+        if let product = premium.products.first(where: { $0.id == plan.id }) {
+            let price = product.displayPrice
+            // If StoreKit returns the matching updated price, use it
+            if price.contains("4.99") || price.contains("14.99") || price.contains("100") || price.contains("99.99") {
+                return price
+            }
+        }
+        // Always enforce the exact official prices ($4.99, $14.99, $100) and ignore stale cache (3.99, 12.99, 79.99)
+        return plan.fallbackPrice
+    }
+
     private var plansSection: some View {
         VStack(spacing: 8) {
             ForEach(plans) { plan in
-                let product = premium.products.first(where: { $0.id == plan.id })
-                let displayPrice = product?.displayPrice ?? plan.fallbackPrice
+                let displayPrice = formattedPrice(for: plan)
                 let isSelected = (selectedProductID == plan.id)
 
                 planRow(
@@ -384,10 +395,11 @@ struct PaywallView: View {
     }
 
     private var ctaButtonText: String {
-        let currentPlan = plans.first(where: { $0.id == selectedProductID })
-        let product = premium.products.first(where: { $0.id == selectedProductID })
-        let price = product?.displayPrice ?? currentPlan?.fallbackPrice ?? ""
-        let title = currentPlan?.title.uppercased() ?? "PRO"
+        guard let currentPlan = plans.first(where: { $0.id == selectedProductID }) else {
+            return "CONTINUE TO PRO"
+        }
+        let price = formattedPrice(for: currentPlan)
+        let title = currentPlan.title.uppercased()
         if !price.isEmpty {
             return "START \(title) — \(price)"
         } else {
