@@ -572,10 +572,10 @@ struct ProfileSettingsView: View {
 
                         settingsSection(title: "Legal") {
                             settingsRow(icon: "doc.text.fill", label: "Privacy Policy", color: LVTheme.textSecondary) {
-                                if let url = URL(string: "https://TODO_YOUR_PRIVACY_URL") { UIApplication.shared.open(url) }
+                                if let url = URL(string: "https://dimaannonce10-alt.github.io/LivingSimulatorAI/privacy.html") { UIApplication.shared.open(url) }
                             }
                             settingsRow(icon: "scroll.fill", label: "Terms of Use", color: LVTheme.textSecondary) {
-                                if let url = URL(string: "https://TODO_YOUR_TERMS_URL") { UIApplication.shared.open(url) }
+                                if let url = URL(string: "https://dimaannonce10-alt.github.io/LivingSimulatorAI/terms.html") { UIApplication.shared.open(url) }
                             }
                         }
 

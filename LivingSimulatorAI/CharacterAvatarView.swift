@@ -358,33 +358,27 @@ struct AvatarHeroCard: View {
 
                 Spacer()
 
-                // Customize Button (Pro-gated)
+                // Customize Button (opens customization studio for all users)
                 Button(action: {
-                    if PremiumManager.shared.isPremium {
-                        showCustomize = true
-                    } else {
-                        showPaywall = true
-                    }
+                    showCustomize = true
                 }) {
                     HStack(spacing: 5) {
-                        if !PremiumManager.shared.isPremium {
-                            Image(systemName: "crown.fill")
-                                .font(.system(size: 10))
-                                .foregroundStyle(LVTheme.neon)
-                        }
+                        Image(systemName: "paintpalette.fill")
+                            .font(.system(size: 10))
+                            .foregroundStyle(LVTheme.neon)
                         Text("CUSTOMIZE")
                             .font(.system(size: 10, weight: .black))
                             .tracking(1.2)
                     }
-                    .foregroundStyle(PremiumManager.shared.isPremium ? Color.white : LVTheme.neon)
+                    .foregroundStyle(Color.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
                         RoundedRectangle(cornerRadius: LVTheme.radiusSM)
-                            .fill(PremiumManager.shared.isPremium ? Color.white.opacity(0.1) : LVTheme.neon.opacity(0.12))
+                            .fill(Color.white.opacity(0.1))
                             .overlay(
                                 RoundedRectangle(cornerRadius: LVTheme.radiusSM)
-                                    .stroke(PremiumManager.shared.isPremium ? Color.white.opacity(0.2) : LVTheme.neon.opacity(0.4), lineWidth: 1)
+                                    .stroke(LVTheme.neon.opacity(0.4), lineWidth: 1)
                             )
                     )
                 }

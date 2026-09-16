@@ -1,14 +1,14 @@
 import SwiftUI
 
-// MARK: - Avatar Customization Sheet (Pro-gated)
+// MARK: - Avatar Customization Sheet (Freely Customizable, Subscription Required to Commit)
 struct AvatarCustomizationView: View {
     @EnvironmentObject var vm: GameViewModel
+    @ObservedObject var premium = PremiumManager.shared
     @Environment(\.dismiss) var dismiss
+
     @State private var draft: AvatarModel = AvatarModel()
     @State private var selectedCategory = 0
     @State private var showPaywall = false
-
-    private let isPro = PremiumManager.shared.isPremium
 
     let categories = ["Skin", "Hair", "Eyes", "Outfit", "Extras"]
     let categoryIcons = ["🌿", "💇", "👁️", "👕", "✨"]
@@ -28,17 +28,28 @@ struct AvatarCustomizationView: View {
                 // ── Category Tabs ────────────────────────────────
                 categoryTabs
 
-                // ── Options Grid ─────────────────────────────────
+                // ── Options Content ──────────────────────────────
                 ScrollView(showsIndicators: false) {
                     optionsContent
                         .padding(.horizontal, 20)
                         .padding(.top, 16)
-                        .padding(.bottom, 40)
+                        .padding(.bottom, 24)
                 }
+
+                // ── Bottom Commit Bar ────────────────────────────
+                bottomCommitBar
             }
         }
         .preferredColorScheme(.dark)
-        .onAppear { draft = vm.state.avatarModel }
+        .onAppear {
+            draft = vm.state.avatarModel
+        }
+        .onChange(of: premium.isPremium) { _, isPro in
+            if isPro {
+                // Automatically commit and apply the drafted character once subscribed
+                commitDraftChanges()
+            }
+        }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
         }
@@ -60,7 +71,7 @@ struct AvatarCustomizationView: View {
             Spacer()
 
             VStack(spacing: 2) {
-                Text("CHARACTER")
+                Text("CHARACTER STUDIO")
                     .font(.system(size: 9, weight: .black))
                     .tracking(3)
                     .foregroundStyle(LVTheme.neon)
@@ -71,23 +82,26 @@ struct AvatarCustomizationView: View {
 
             Spacer()
 
-            Button(action: {
-                if isPro {
-                    vm.state.avatarModel = draft
-                    vm.state.save()
-                    Haptics.notification(.success)
-                    dismiss()
-                } else {
-                    showPaywall = true
+            Button(action: handleCommitAction) {
+                HStack(spacing: 4) {
+                    if !premium.isPremium {
+                        Image(systemName: "crown.fill")
+                            .font(.system(size: 10))
+                    }
+                    Text(premium.isPremium ? "SAVE" : "COMMIT")
+                        .font(.system(size: 11, weight: .black))
+                        .tracking(1.2)
                 }
-            }) {
-                Text(isPro ? "SAVE" : "🔒 PRO")
-                    .font(.system(size: 11, weight: .black))
-                    .tracking(1.5)
-                    .foregroundStyle(isPro ? LVTheme.bg : LVTheme.neon)
-                    .padding(.horizontal, 14).padding(.vertical, 8)
-                    .background(isPro ? LVTheme.neon2 : LVTheme.neon.opacity(0.15))
-                    .clipShape(Capsule())
+                .foregroundStyle(premium.isPremium ? LVTheme.bg : Color.black)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(
+                    premium.isPremium ?
+                    AnyShapeStyle(LVTheme.neon2) :
+                    AnyShapeStyle(LVTheme.goldGradient)
+                )
+                .clipShape(Capsule())
+                .shadow(color: (premium.isPremium ? LVTheme.neon2 : Color.orange).opacity(0.4), radius: 8)
             }
             .buttonStyle(.plain)
         }
@@ -100,15 +114,17 @@ struct AvatarCustomizationView: View {
     var livePreview: some View {
         ZStack {
             LinearGradient(
-                colors: [draft.outfitColor.opacity(0.15), .clear],
-                startPoint: .top, endPoint: .bottom)
+                colors: [draft.outfitColor.opacity(0.18), .clear],
+                startPoint: .top, endPoint: .bottom
+            )
 
             VStack(spacing: 4) {
                 CharacterAvatarView(
                     model: draft,
                     age: vm.state.character?.age ?? 25,
                     happiness: vm.state.character?.happiness ?? 75,
-                    size: 140)
+                    size: 140
+                )
 
                 HStack(spacing: 5) {
                     Image(systemName: "hand.draw.fill")
@@ -118,10 +134,10 @@ struct AvatarCustomizationView: View {
                 }
                 .foregroundStyle(LVTheme.textSecondary)
                 .padding(.top, 4)
-                .padding(.bottom, 8)
+                .padding(.bottom, 6)
             }
         }
-        .frame(height: 230)
+        .frame(height: 220)
     }
 
     // MARK: - Category Tabs
@@ -147,7 +163,8 @@ struct AvatarCustomizationView: View {
                         .overlay(
                             Capsule().stroke(
                                 selectedCategory == idx ? .clear : LVTheme.glassBorder,
-                                lineWidth: 1)
+                                lineWidth: 1
+                            )
                         )
                         .clipShape(Capsule())
                         .shadow(color: selectedCategory == idx ? LVTheme.neon2.opacity(0.4) : .clear, radius: 8)
@@ -266,7 +283,56 @@ struct AvatarCustomizationView: View {
     // MARK: - Extras Options
     var extrasOptions: some View {
         VStack(alignment: .leading, spacing: 16) {
-            optionHeader("Accessories")
+            optionHeader("Gender & Appearance")
+
+            HStack(spacing: 10) {
+                Button(action: {
+                    withAnimation(.spring(response: 0.3)) {
+                        draft.isMale = true
+                    }
+                }) {
+                    HStack(spacing: 8) {
+                        Text("👨").font(.system(size: 18))
+                        Text("Male Look")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(draft.isMale ? LVTheme.bg : LVTheme.textPrimary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(draft.isMale ? LVTheme.neon : LVTheme.card)
+                    .clipShape(RoundedRectangle(cornerRadius: LVTheme.radiusSM))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: LVTheme.radiusSM)
+                            .stroke(draft.isMale ? .clear : LVTheme.glassBorder, lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    withAnimation(.spring(response: 0.3)) {
+                        draft.isMale = false
+                        draft.hasBeard = false
+                    }
+                }) {
+                    HStack(spacing: 8) {
+                        Text("👩").font(.system(size: 18))
+                        Text("Female Look")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(!draft.isMale ? LVTheme.bg : LVTheme.textPrimary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(!draft.isMale ? LVTheme.neon : LVTheme.card)
+                    .clipShape(RoundedRectangle(cornerRadius: LVTheme.radiusSM))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: LVTheme.radiusSM)
+                            .stroke(!draft.isMale ? .clear : LVTheme.glassBorder, lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+
+            optionHeader("Accessories & Details")
 
             VStack(spacing: 10) {
                 toggleTile(icon: "🕶️", label: "Glasses", enabled: draft.hasGlasses) {
@@ -278,16 +344,86 @@ struct AvatarCustomizationView: View {
                     }
                 }
             }
-
-            // Pro upsell if free
-            if !isPro {
-                proUpsellBanner
-            }
         }
     }
 
-    // MARK: - Sub-components
+    // MARK: - Bottom Commit Bar
+    var bottomCommitBar: some View {
+        VStack(spacing: 8) {
+            Button(action: handleCommitAction) {
+                HStack(spacing: 8) {
+                    if !premium.isPremium {
+                        Image(systemName: "crown.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color.black)
+                    }
+                    Text(premium.isPremium ? "SAVE CHANGES" : "COMMIT CHANGES (PRO)")
+                        .font(.system(size: 14, weight: .black))
+                        .tracking(1.0)
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 12, weight: .bold))
+                }
+                .foregroundStyle(Color.black)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(
+                            premium.isPremium ?
+                            LinearGradient(colors: [LVTheme.neon, LVTheme.neon2], startPoint: .leading, endPoint: .trailing) :
+                            LVTheme.goldGradient
+                        )
+                )
+                .shadow(
+                    color: (premium.isPremium ? LVTheme.neon : Color.orange).opacity(0.45),
+                    radius: 12,
+                    y: 4
+                )
+            }
 
+            if !premium.isPremium {
+                Text("🔒 Subscription required to save custom look to your game")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(LVTheme.textSecondary)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 10)
+        .padding(.bottom, 14)
+        .background(.ultraThinMaterial)
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(Color.white.opacity(0.08))
+                .frame(height: 1)
+        }
+    }
+
+    // MARK: - Actions
+    private func handleCommitAction() {
+        if premium.isPremium {
+            commitDraftChanges()
+        } else {
+            Haptics.impact(.medium)
+            showPaywall = true
+        }
+    }
+
+    private func commitDraftChanges() {
+        vm.state.avatarModel = draft
+        if var char = vm.state.character {
+            if draft.isMale && char.gender != .male {
+                char.gender = .male
+            } else if !draft.isMale && char.gender != .female {
+                char.gender = .female
+            }
+            vm.state.character = char
+        }
+        vm.state.save()
+        Haptics.notification(.success)
+        dismiss()
+    }
+
+    // MARK: - Sub-components
     func optionHeader(_ title: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Rectangle()
@@ -383,39 +519,6 @@ struct AvatarCustomizationView: View {
             }
             .padding(14)
             .glassCard()
-        }
-        .buttonStyle(.plain)
-    }
-
-    var proUpsellBanner: some View {
-        Button(action: { showPaywall = true }) {
-            HStack(spacing: 14) {
-                Text("👑").font(.system(size: 28))
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("UNLOCK FULL CUSTOMIZATION")
-                        .font(.system(size: 12, weight: .black))
-                        .tracking(1)
-                        .foregroundStyle(LVTheme.neon)
-                    Text("Upgrade to Pro to save your look and unlock all options")
-                        .font(.system(size: 11))
-                        .foregroundStyle(LVTheme.textSecondary)
-                        .lineSpacing(2)
-                }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundStyle(LVTheme.neon.opacity(0.6))
-            }
-            .padding(16)
-            .glassCard(tint: LVTheme.neon)
-            .overlay(alignment: .leading) {
-                Rectangle()
-                    .fill(LVTheme.neon)
-                    .frame(width: 3)
-                    .clipShape(RoundedRectangle(cornerRadius: 2))
-                    .shadow(color: LVTheme.neon.opacity(0.8), radius: 6)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: LVTheme.radiusMD))
         }
         .buttonStyle(.plain)
     }
