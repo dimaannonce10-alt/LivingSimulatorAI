@@ -202,7 +202,7 @@ struct PaywallView: View {
     private var benefitsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 8) {
             benefitPill(icon: "nosign", title: "No Ads", desc: "Zero interruptions")
-            benefitPill(icon: "person.crop.circle.badge.checkmark", title: "All Avatars", desc: "Full 3D styling")
+            benefitPill(icon: "sparkles", title: "God Mode", desc: "Stat boosts & luck")
             benefitPill(icon: "infinity", title: "Infinite Lives", desc: "Zero cooldowns")
             benefitPill(icon: "crown.fill", title: "VIP Storylines", desc: "Billionaire events")
         }
