@@ -3,92 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Living Simulator AI - Legal & Support</title>
+    <title>Living Simulator AI — Official Website & Support</title>
+    <meta name="description" content="Living Simulator AI: The next-generation 3D life simulation game. Create your 3D avatar, roll starting DNA, build a financial empire, make life-altering decisions, and unlock God Mode.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0c0f17;
-            --card-bg: #141926;
-            --accent-color: #22d3ee;
-            --accent-gold: #f59e0b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border-color: #1e293b;
+            --bg-dark: #07090E;
+            --bg-card: rgba(18, 22, 34, 0.75);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --accent-orange: #FF7A00;
+            --accent-cyan: #00E5FF;
+            --accent-gold: #FFB800;
+            --accent-lime: #C8FF00;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(255, 122, 0, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 15% 70%, rgba(255, 184, 0, 0.06) 0%, transparent 50%);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 24px;
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #FF7A00, #FFB800);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            font-size: 22px;
+            box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
         }
-        .card {
-            max-width: 540px;
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 36px;
-            text-align: center;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-        }
-        h1 {
-            font-size: 26px;
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #ffffff, var(--accent-color));
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #FFF, #CBD5E1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 28px;
-        }
-        .btn-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .btn {
-            display: block;
-            padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
+
+        nav a {
+            color: var(--text-muted);
             text-decoration: none;
+            font-size: 14px;
             font-weight: 600;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent-orange);
+        }
+
+        /* Hero */
+        .hero {
+            max-width: 960px;
+            margin: 60px auto 40px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(255, 122, 0, 0.12);
+            border: 1px solid rgba(255, 122, 0, 0.35);
+            border-radius: 999px;
+            color: var(--accent-orange);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(38px, 6vw, 68px);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 22px;
+            background: linear-gradient(180deg, #FFFFFF 20%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 34px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #FF7A00, #FF5500);
+            color: #FFFFFF;
+            padding: 16px 36px;
+            border-radius: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 17px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(255, 122, 0, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 38px rgba(255, 122, 0, 0.6);
+        }
+
+        /* Screenshots Showcase */
+        .showcase {
+            max-width: 1200px;
+            margin: 40px auto 80px;
+            padding: 0 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 14px;
+            backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            text-align: center;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 122, 0, 0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .gallery-item h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            margin-top: 14px;
+            font-weight: 700;
+        }
+
+        /* Features */
+        .features {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(12px);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 14px;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Support & Contact */
+        .support-section {
+            max-width: 700px;
+            margin: 0 auto 80px;
+            padding: 40px 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 24px;
+            text-align: center;
+            backdrop-filter: blur(14px);
+        }
+
+        .support-section h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .support-section p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
             font-size: 15px;
+        }
+
+        .email-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-card);
+            color: var(--accent-orange);
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 12px;
+            text-decoration: none;
             transition: all 0.2s ease;
         }
-        .btn:hover {
-            background: rgba(34, 211, 238, 0.12);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-            transform: translateY(-2px);
+
+        .email-btn:hover {
+            background: rgba(255, 122, 0, 0.15);
+            border-color: var(--accent-orange);
         }
-        .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: var(--text-secondary);
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-card);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-main);
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Living Simulator AI</h1>
-        <p>Official Legal Documents & App Store Disclosures</p>
-        <div class="btn-list">
-            <a class="btn" href="privacy.html">📄 Privacy Policy</a>
-            <a class="btn" href="terms.html">⚖️ Terms of Use (EULA)</a>
+
+    <header>
+        <a href="index.html" class="brand">
+            <div class="brand-icon">⚡</div>
+            <span class="brand-title">Living Simulator AI</span>
+        </a>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#screenshots">Screenshots</a>
+            <a href="#support">Support</a>
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="badge-pill">✦ NEXT-GEN 3D LIFE SIMULATOR ✦</div>
+        <h1>LIVE YOUR DREAM LIFE.<br>WITHOUT LIMITS.</h1>
+        <p>Craft your unique 3D avatar, roll starting DNA, build a billion-dollar empire, make high-stakes choices, and rise to elite status.</p>
+        <a href="#screenshots" class="hero-cta">Explore The Simulation</a>
+    </section>
+
+    <section class="showcase" id="screenshots">
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="screenshots/1_Dashboard_3D_Avatar.png" alt="3D Avatar Dashboard" loading="lazy">
+                <h3>3D Life Simulation</h3>
+            </div>
+            <div class="gallery-item">
+                <img src="screenshots/2_Financial_Empire.png" alt="Financial Empire" loading="lazy">
+                <h3>Financial Empire</h3>
+            </div>
+            <div class="gallery-item">
+                <img src="screenshots/3_Character_DNA.png" alt="Character DNA" loading="lazy">
+                <h3>Craft Your Destiny</h3>
+            </div>
+            <div class="gallery-item">
+                <img src="screenshots/4_Pro_Membership.png" alt="Unlimited VIP Access" loading="lazy">
+                <h3>Unlimited VIP Access</h3>
+            </div>
         </div>
-        <div class="footer">
-            &copy; 2026 Living Simulator AI. All rights reserved.
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>Game Features</h2>
         </div>
-    </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>Dynamic 3D Character</h3>
+                <p>Watch your character realistically age across 7 life stages with full 3D perspective tilt and evolving life milestones.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Empire & Investing</h3>
+                <p>Climb corporate ladders, launch high-yield businesses, acquire luxury properties, and build passive monthly cash flow.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧬</div>
+                <h3>DNA & Random Stats</h3>
+                <p>Every life begins with unique starting attributes: Health, Happiness, Intelligence, Appearance, and rare talents.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👑</div>
+                <h3>God Mode & VIP Access</h3>
+                <p>Unlock billionaire storylines, remove all ads, gain infinite lives, and wield ultimate control over life outcomes.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="support-section" id="support">
+        <h2>Customer Support & Feedback</h2>
+        <p>Need help with your account, have a bug report, or want to suggest new storylines? Our team is here to assist you.</p>
+        <a href="mailto:dimaannonce10@gmail.com" class="email-btn">✉️ Contact Support: dimaannonce10@gmail.com</a>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Use (EULA)</a>
+            <a href="app-ads.txt">app-ads.txt</a>
+            <a href="#support">Support</a>
+        </div>
+        <p>&copy; 2026 Living Simulator AI. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
