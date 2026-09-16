@@ -58,6 +58,7 @@
 		A019 /* AvatarCustomizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCustomizationView.swift; sourceTree = "<group>"; };
 		AASS /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AIPL /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ASK1 /* LivingSimulator.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = LivingSimulator.storekit; sourceTree = "<group>"; };
 		PROD /* Living Simulator AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Living Simulator AI.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,6 +101,7 @@
 				9D7EE34A86DB467825181AEE /* AdViews.swift */,
 				AASS /* Assets.xcassets */,
 				AIPL /* Info.plist */,
+				ASK1 /* LivingSimulator.storekit */,
 			);
 			path = LivingSimulatorAI;
 			sourceTree = "<group>";

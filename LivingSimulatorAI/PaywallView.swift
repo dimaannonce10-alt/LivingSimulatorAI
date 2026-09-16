@@ -23,15 +23,18 @@ struct PaywallView: View {
     @State private var alertTitle = ""
     @State private var alertMessage = ""
 
-    // The 3 user plans
+    // The 3 user plans in exact order:
+    // 1. Weekly: weekly_life (4.99$)
+    // 2. Monthly: monthly_life (14.99$)
+    // 3. Yearly: yearly_life (100$)
     let plans: [PaywallPlan] = [
         PaywallPlan(
-            id: "yearly_life",
-            title: "Yearly",
-            fallbackPrice: "100$",
-            period: "/ yr",
-            subtitle: "Save 44% • $8.33/mo",
-            badge: "👑 BEST VALUE"
+            id: "weekly_life",
+            title: "Weekly",
+            fallbackPrice: "4.99$",
+            period: "/ wk",
+            subtitle: "Billed weekly • Cancel anytime",
+            badge: nil
         ),
         PaywallPlan(
             id: "monthly_life",
@@ -42,12 +45,12 @@ struct PaywallView: View {
             badge: nil
         ),
         PaywallPlan(
-            id: "weekly_life",
-            title: "Weekly",
-            fallbackPrice: "4.99$",
-            period: "/ wk",
-            subtitle: "Billed weekly • Cancel anytime",
-            badge: nil
+            id: "yearly_life",
+            title: "Yearly",
+            fallbackPrice: "100$",
+            period: "/ yr",
+            subtitle: "Save 44% • 8.33$/mo",
+            badge: "👑 BEST VALUE"
         )
     ]
 
@@ -381,15 +384,14 @@ struct PaywallView: View {
     }
 
     private var ctaButtonText: String {
-        switch selectedProductID {
-        case "yearly_life":
-            return "START YEARLY PLAN"
-        case "monthly_life":
-            return "START MONTHLY PLAN"
-        case "weekly_life":
-            return "START WEEKLY PLAN"
-        default:
-            return "CONTINUE TO PRO"
+        let currentPlan = plans.first(where: { $0.id == selectedProductID })
+        let product = premium.products.first(where: { $0.id == selectedProductID })
+        let price = product?.displayPrice ?? currentPlan?.fallbackPrice ?? ""
+        let title = currentPlan?.title.uppercased() ?? "PRO"
+        if !price.isEmpty {
+            return "START \(title) — \(price)"
+        } else {
+            return "START \(title) PLAN"
         }
     }
 
