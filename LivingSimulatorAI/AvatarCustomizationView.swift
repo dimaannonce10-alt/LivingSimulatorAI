@@ -43,6 +43,9 @@ struct AvatarCustomizationView: View {
         .preferredColorScheme(.dark)
         .onAppear {
             draft = vm.state.avatarModel
+            if let char = vm.state.character {
+                draft.isMale = (char.gender == .male)
+            }
         }
         .onChange(of: premium.isPremium) { _, isPro in
             if isPro {
@@ -123,8 +126,11 @@ struct AvatarCustomizationView: View {
                     model: draft,
                     age: vm.state.character?.age ?? 25,
                     happiness: vm.state.character?.happiness ?? 75,
-                    size: 140
+                    size: 145,
+                    allowsInteractiveRotation: true
                 )
+                .id(draft)
+                .animation(.spring(response: 0.35, dampingFraction: 0.75), value: draft)
 
                 HStack(spacing: 5) {
                     Image(systemName: "hand.draw.fill")

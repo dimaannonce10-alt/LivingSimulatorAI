@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Avatar Customization Model
-struct AvatarModel: Codable, Equatable {
+struct AvatarModel: Codable, Equatable, Hashable {
 
     // MARK: Appearance
     var skinToneIndex: Int = 1          // 0-4 (fair → dark)
