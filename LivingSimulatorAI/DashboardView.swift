@@ -523,6 +523,7 @@ struct AgeUpOverlay: View {
 // MARK: - Profile Settings View
 struct ProfileSettingsView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.requestReview) var requestReview
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
@@ -564,9 +565,7 @@ struct ProfileSettingsView: View {
                             }
                             settingsRow(icon: "square.and.arrow.up.fill", label: "Share the App", color: LVTheme.neon2) { shareApp() }
                             settingsRow(icon: "star.fill", label: "Rate Living Simulator AI", color: LVTheme.neon) {
-                                if let url = URL(string: "https://apps.apple.com/app/idTODO_APP_STORE_ID?action=write-review") {
-                                    UIApplication.shared.open(url)
-                                }
+                                requestReview()
                             }
                         }
 
@@ -635,13 +634,14 @@ struct ProfileSettingsView: View {
 
     private func shareApp() {
         let text = "Check out Living Simulator AI — the ultimate life simulator! 🚀"
-        let url = URL(string: "https://apps.apple.com/app/idTODO_APP_STORE_ID")!
-        let activityVC = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
-        if let root = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene })
-            .flatMap({ $0.windows })
-            .first(where: { $0.isKeyWindow })?.rootViewController {
-            root.present(activityVC, animated: true)
+        if let url = URL(string: "https://dimaannonce10-alt.github.io/LivingSimulatorAI/") {
+            let activityVC = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
+            if let root = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?.rootViewController {
+                root.present(activityVC, animated: true)
+            }
         }
     }
 }
