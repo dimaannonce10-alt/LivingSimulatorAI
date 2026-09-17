@@ -26,7 +26,7 @@ struct PaywallView: View {
     // The 3 user plans in exact order:
     // 1. Weekly: weekly_life ($4.99)
     // 2. Monthly: monthly_life ($14.99)
-    // 3. Yearly: yearly_life ($100)
+    // 3. Yearly: yearly_life ($99.99)
     let plans: [PaywallPlan] = [
         PaywallPlan(
             id: "weekly_life",
@@ -47,7 +47,7 @@ struct PaywallView: View {
         PaywallPlan(
             id: "yearly_life",
             title: "Yearly",
-            fallbackPrice: "$100",
+            fallbackPrice: "$99.99",
             period: "/ yr",
             subtitle: "Save 44% • $8.33/mo",
             badge: "👑 BEST VALUE"
@@ -247,11 +247,11 @@ struct PaywallView: View {
         if let product = premium.products.first(where: { $0.id == plan.id }) {
             let price = product.displayPrice
             // If StoreKit returns the matching updated price, use it
-            if price.contains("4.99") || price.contains("14.99") || price.contains("100") || price.contains("99.99") {
+            if price.contains("4.99") || price.contains("14.99") || price.contains("99.99") {
                 return price
             }
         }
-        // Always enforce the exact official prices ($4.99, $14.99, $100) and ignore stale cache (3.99, 12.99, 79.99)
+        // Always enforce the exact official prices ($4.99, $14.99, $99.99) and ignore stale cache (3.99, 12.99, 79.99, 100)
         return plan.fallbackPrice
     }
 
